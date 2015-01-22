@@ -132,5 +132,9 @@ function interfaceSpec(implRequireString) {
 }
 
 // impl ideas
+
 interfaceSpec('../backbone/CollectionImpl');
+
 //interfaceSpec('../pourover/CollectionImpl');
+
+//interfaceSpec('https://github.com/anthonyshort/backbone.collectionsubset or forks')
