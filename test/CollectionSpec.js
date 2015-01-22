@@ -133,4 +133,4 @@ function interfaceSpec(implRequireString) {
 
 // impl ideas
 interfaceSpec('../backbone/CollectionImpl');
-interfaceSpec('../pourover/CollectionImpl');
+//interfaceSpec('../pourover/CollectionImpl');
