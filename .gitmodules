@@ -1,3 +1,4 @@
 [submodule "pourover/vendor"]
 	path = pourover/vendor
-	url = https://github.com/NYTimes/pourover
+	url = https://github.com/Reposoft/pourover
+	branch = npm-module-export

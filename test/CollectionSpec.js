@@ -1,9 +1,44 @@
 
+var Backbone = require('backbone');
+
 function interfaceSpec(impl, required) {
 
-  var Collection = required;
+  var Collection = required.Collection;
 
   describe("Collection, " + impl + " impl", function() {
+
+    describe("Compatibility with Backbone.Collection", function() {
+      var b = new Backbone.Collection();
+      var c = new Collection();
+
+      var Listener = function(collection) {
+
+        this.id = collection.toString();
+
+        this.log = [];
+
+        var eventHandler = function(event) {
+          this.log.push(arguments);
+          console.log(this.id, JSON.stringify(event));
+        };
+
+        collection.on('add', eventHandler.bind(this));
+      };
+
+      new Listener(b);
+      new Listener(c);
+
+      it("Accepts Backbone.Model instances", function() {
+        var m1 = new Backbone.Model({'name':'test1', 'date':new Date()});
+        b.add(m1);
+        c.add(m1);
+      });
+
+      it("Accepts Backbone.Model subclass instances", function() {
+
+      });
+
+    });
 
     describe("#subset(options)", function() {
 
@@ -151,8 +186,8 @@ function interfaceSpec(impl, required) {
 
 // impl ideas
 
-interfaceSpec('backbone', require('../backbone/CollectionImpl'));
+interfaceSpec('backbone', {Collection: require('../backbone/CollectionImpl')});
 
-interfaceSpec('pourover', require('../pourover/CollectionImpl'));
+interfaceSpec('pourover', {Collection: require('../pourover/CollectionImpl')});
 
 //interfaceSpec('https://github.com/anthonyshort/backbone.collectionsubset or forks')
