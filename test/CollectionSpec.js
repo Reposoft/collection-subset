@@ -1,9 +1,9 @@
 
-function interfaceSpec(implRequireString) {
+function interfaceSpec(impl, required) {
 
-  var impl = require(implRequireString);
+  var Collection = required;
 
-  describe("Collection", function() {
+  describe("Collection, " + impl + " impl", function() {
 
     describe("#subset(options)", function() {
 
@@ -133,14 +133,26 @@ function interfaceSpec(implRequireString) {
 
     });
 
+    it("Can be a Date range", function() {
+
+    });
+
+    it("Can be a moment.js range", function() {
+
+    });
+
+    it("Date ranges by default include start timestamp and exclude end timestamp", function() {
+
+    });
+
   });
 
 }
 
 // impl ideas
 
-interfaceSpec('../backbone/CollectionImpl');
+interfaceSpec('backbone', require('../backbone/CollectionImpl'));
 
-//interfaceSpec('../pourover/CollectionImpl');
+interfaceSpec('pourover', require('../pourover/CollectionImpl'));
 
 //interfaceSpec('https://github.com/anthonyshort/backbone.collectionsubset or forks')
