@@ -1,0 +1,3 @@
+[submodule "pourover/vendor"]
+	path = pourover/vendor
+	url = https://github.com/NYTimes/pourover
