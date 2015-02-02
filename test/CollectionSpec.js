@@ -11,7 +11,7 @@ function interfaceSpec(implRequireString) {
 
       });
 
-      it("Supports options.insert, a function", function() {
+      it("Supports options.immerse, a function", function() {
 
       });
 
@@ -39,7 +39,11 @@ function interfaceSpec(implRequireString) {
 
     describe("Subset's #add", function() {
 
-      it("Invokes the options.insert function", function() {
+      it("Invokes the options.immerse function", function() {
+
+      });
+
+      it("With the default immerse being a no-op i.e. no attribute changes", function() {
 
       });
 

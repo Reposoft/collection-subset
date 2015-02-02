@@ -1,2 +1,2 @@
 
-require('./vendor/pourover.js');
+require('./vendor/pourover');
