@@ -47,7 +47,9 @@ function interfaceSpec(implRequireString) {
 
       });
 
-      it("Invokes subset")
+      it("Adds below the last item of the subset, because it feels natural", function() {
+
+      });
 
     });
 
