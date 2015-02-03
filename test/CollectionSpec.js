@@ -1,4 +1,6 @@
 
+var expect = require('chai').expect;
+
 var Backbone = require('backbone');
 
 function interfaceSpec(impl, required) {
@@ -25,13 +27,15 @@ function interfaceSpec(impl, required) {
         collection.on('add', eventHandler.bind(this));
       };
 
-      new Listener(b);
-      new Listener(c);
+      var be = new Listener(b);
+      var ce = new Listener(c);
 
       it("Accepts Backbone.Model instances", function() {
         var m1 = new Backbone.Model({'name':'test1', 'date':new Date()});
         b.add(m1);
         c.add(m1);
+        expect(be.log).to.have.length(1);
+        expect(ce.log).to.have.length(1);
       });
 
       it("Accepts Backbone.Model subclass instances", function() {
@@ -157,6 +161,22 @@ function interfaceSpec(impl, required) {
       it("Ideally supports move operations within the collection, and emits events for those", function() {
 
       });
+
+    });
+
+  });
+
+  describe("#subsetSupports", function() {
+
+    it("Is a function available on the collection prototype and on instances", function() {
+
+    });
+
+    it("Returns true given a string if the filter name as defined in Filters (below) is supported", function() {
+
+    });
+
+    it("Returns true given a filter instance if the filter is supported", function() {
 
     });
 
