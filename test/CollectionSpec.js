@@ -1,45 +1,68 @@
+'use strict';
 
 var expect = require('chai').expect;
 
 var Backbone = require('backbone');
 
+/**
+ * Attempts to define a minimal API for Collections that back View+Controller logic.
+ *
+ * Also attempts to be more strict than Backbone so it can alert on suspicious use,
+ * for example repeated add of a model.
+ */
 function interfaceSpec(impl, required) {
 
   var Collection = required.Collection;
 
   describe("Collection, " + impl + " impl", function() {
 
-    describe("Compatibility with Backbone.Collection", function() {
-      var b = new Backbone.Collection();
+    // A positive tests, with the more intricate details of these functions asserted in specific describe's below
+    describe("#add, #length, #get, #remove", function() {
+
       var c = new Collection();
 
-      var Listener = function(collection) {
-
-        this.id = collection.toString();
-
-        this.log = [];
-
-        var eventHandler = function(event) {
-          this.log.push(arguments);
-          console.log(this.id, JSON.stringify(event));
-        };
-
-        collection.on('add', eventHandler.bind(this));
+      // A zero-framework object constructor with the distinction between logic and persistable state
+      var MyObj = function MyObj(attributes) {
+        this.attributes = attributes;
       };
 
-      var be = new Listener(b);
-      var ce = new Listener(c);
+      var m1 = new MyObj({'id': 't1', 'name': 'Test 1', 'date': new Date()});
+      m1.cid = 1;
+      var m2 = new MyObj({'id': 't2', 'name': 'Test 2', 'date': new Date(m1.valueOf() + 1000)});
 
-      it("Accepts Backbone.Model instances", function() {
-        var m1 = new Backbone.Model({'name':'test1', 'date':new Date()});
-        b.add(m1);
+      it("Adds objects that have .attributes", function() {
         c.add(m1);
-        expect(be.log).to.have.length(1);
-        expect(ce.log).to.have.length(1);
       });
 
-      it("Accepts Backbone.Model subclass instances", function() {
+      it("Has a size() method", function() {
+        expect(c.size()).to.equal(1);
+      });
 
+      it("Adds arrays of objects that have .attributes", function() {
+        c.add([m2]);
+        expect(c.size()).to.equal(2);
+      });
+
+      xit("Does .cid stuff?", function() {
+        // Backbone sets this on all model instances
+      });
+
+      it("Retrieves objects by .cid", function() {
+        expect(c.get(1)).to.equal(m1);
+      });
+
+      it("Retrieves objects by 'id' attribute values", function() {
+        expect(c.get('t1')).to.equal(m1);
+        expect(c.get('t2')).to.equal(m2);
+      });
+
+      xit("Removes by the same arguments as get", function() {
+
+      });
+
+      xit("Removes by instance?", function() {
+        c.remove(m1);
+        expect(c.size()).to.equal(1);
       });
 
     });
@@ -94,6 +117,8 @@ function interfaceSpec(impl, required) {
 
       });
 
+      // TODO how to handle duplicates
+
     });
 
     describe("Subset's #subset", function() {
@@ -131,6 +156,23 @@ function interfaceSpec(impl, required) {
       });
 
       it("Might need a customizable way to convert from data object to model object, at least on the backing collection", function() {
+
+      });
+
+    });
+
+    describe("#add", function() {
+
+      // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a model class agnostic collection
+      it("Refuses to add objects that lack .attributes", function() {
+
+      });
+
+      it("Refuses to add an object that has already been added", function() {
+
+      });
+
+      it("Should probably also refuse to add an object with a .attributes that has already been added", function() {
 
       });
 
@@ -197,6 +239,50 @@ function interfaceSpec(impl, required) {
     });
 
     it("Date ranges by default include start timestamp and exclude end timestamp", function() {
+
+    });
+
+  });
+
+  // This describe uses a regualr Backbone Collection, not our backbone based impl,
+  // so should be restricted to a few sample operations
+  describe(impl + " impl's Compatibility with plain Backbone.Collection", function() {
+    var b = new Backbone.Collection();
+    var c = new Collection();
+    c.toString = function() {return '(' + impl + ')'};
+
+    var Listener = function(collection) {
+
+      this.id = collection.toString();
+
+      this.log = [];
+
+      var eventHandler = function(event) {
+        this.log.push(arguments);
+        console.log('Compatible event?', this.id, JSON.stringify(event));
+      };
+
+      collection.on('add', eventHandler.bind(this));
+    };
+
+    var be = new Listener(b);
+    var ce = new Listener(c);
+
+    var m1 = new Backbone.Model({'id': 't1', 'name': 'Test1', 'date': new Date()});
+
+    it("Accepts Backbone.Model instances", function() {
+      b.add(m1);
+      expect(m1.cid).to.exist();
+      c.add(m1);
+    });
+
+    // TODO PourOver doesn't
+    xit("Emits 'add' events", function() {
+      expect(be.log).to.have.length(1);
+      expect(ce.log).to.have.length(1);
+    });
+
+    it("Emits change events", function() {
 
     });
 

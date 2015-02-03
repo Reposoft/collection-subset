@@ -12,3 +12,7 @@ Collection.prototype.add = function add(models) {
   var objects = _.pluck(models, 'attributes');
   this.addItems(objects);
 };
+
+Collection.prototype.size = function size() {
+  return this.items.length;
+};
