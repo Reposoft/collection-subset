@@ -47,17 +47,18 @@ function interfaceSpec(impl, required) {
         // Backbone sets this on all model instances
       });
 
-      it("Retrieves objects by .cid", function() {
+      // TODO What is a useful get behavior? getById, getByCid?
+
+      xit("Retrieves objects by .cid if defined", function() {
         expect(c.get(1)).to.equal(m1);
       });
 
-      it("Retrieves objects by 'id' attribute values", function() {
+      xit("Retrieves objects by 'id' attribute values", function() {
         expect(c.get('t1')).to.equal(m1);
         expect(c.get('t2')).to.equal(m2);
       });
 
       xit("Removes by the same arguments as get", function() {
-
       });
 
       xit("Removes by instance?", function() {
