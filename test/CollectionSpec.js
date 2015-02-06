@@ -172,6 +172,13 @@ function interfaceSpec(impl, required) {
         }).to.throw('Attributes property required, transfers state');
       });
 
+      it("Returns the added objects", function() {
+        // still no support for the generic object: var m = {attributes:{id: 'id1'}};
+        var m = new Backbone.Model({id: 'id1'});
+        var c = new Collection();
+        expect(c.add(m)).to.equal(m);
+      });
+
       it("Refuses to add an object that has already been added", function() {
 
       });

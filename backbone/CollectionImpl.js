@@ -16,7 +16,7 @@ var Collection = module.exports = Backbone.Collection.extend({
         throw 'Attributes property required, transfers state';
       }
     }
-    Backbone.Collection.prototype.set.apply(this, arguments);
+    return Backbone.Collection.prototype.set.apply(this, arguments);
   }
 
 });

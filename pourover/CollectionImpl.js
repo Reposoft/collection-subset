@@ -14,6 +14,7 @@ Collection.prototype.add = function add(models) {
     throw 'Attributes property required, transfers state';
   }
   this.addItems(objects);
+  return singular ? models[0] : models;
 };
 
 Collection.prototype.size = function size() {
