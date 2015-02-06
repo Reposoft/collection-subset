@@ -10,6 +10,9 @@ Collection.prototype.add = function add(models) {
   var singular = !_.isArray(models);
   models = singular ? [models] : _.clone(models);
   var objects = _.pluck(models, 'attributes');
+  if (objects.indexOf(undefined) !== -1) {
+    throw 'Attributes property required, transfers state';
+  }
   this.addItems(objects);
 };
 
