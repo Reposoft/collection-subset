@@ -6,6 +6,8 @@ var impl = {
 
 describe("collection-subset Backbone impl", function() {
 
+  require('./UnitTests')(impl);
+
   require('../../test/CollectionSpec')(impl);
 
   require('../../test/CollectionOrderSpec')(impl);

@@ -18,7 +18,7 @@ describe("collection-subset PourOver impl", function() {
 
   require('../../test/filters/MinimumSpec')(impl);
 
-  require('../../test/filters/WhereEnumSpec')(impl);
+  require('../../test/filters/SingleEnumSpec')(impl);
 
   require('../../test/filters/ContinuousRangeSpec')(impl);
 

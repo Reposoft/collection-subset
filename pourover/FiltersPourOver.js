@@ -11,8 +11,13 @@ for (var i = 0; i < supported.length; i++) {
   Filters[name] = PourOver[name];
 }
 
-Filters.whereEnum = Filters.makeExactFilter;
-
-Filters.where = function() {
-  // TODO wrap object values with arrays and use makeExactFilter
+Filters.where = function(properties) {
+  var filter = [];
+  for (var key in properties) {
+    if (properties.hasOwnProperty(key)) {
+      var clause = PourOver.makeExactFilter(key, [properties[key]]);
+      filter.push(clause);
+    }
+  }
+  return filter;
 };

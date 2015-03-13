@@ -70,6 +70,12 @@ module.exports = function interfaceSpec(required) {
 
     describe("#subset(options)", function() {
 
+      var c = new Collection();
+
+      it("Is a function", function() {
+        expect(c.subset).to.be.a('function');
+      });
+
       it("Requires options.filter", function() {
 
       });

@@ -16,3 +16,15 @@ Collection.prototype.add = function add(models) {
 Collection.prototype.size = function size() {
   return this.items.length;
 };
+
+Collection.prototype.clone = function() {
+  // TODO should we clone?
+  return this;
+};
+
+Collection.prototype.subset = function(options) {
+  var clone = this.clone();
+  clone.addFilters(options.filter);
+  // TODO how do we actually execute the filter
+  return clone;
+};

@@ -24,3 +24,18 @@ Collection.prototype.addFirst = function addFirst(newModel) {
   }
   this.add(newModel, {at:0});
 };
+
+Collection.prototype.subset = function(options) {
+  if (!options.filter) {
+    throw 'Subset options must have a filter property';
+  }
+  if (options.filter.where) {
+    return this.subsetConnect(this.where(options.filter.where));
+  }
+  console.log('filter', options.filter, 'among', this.pluck('id'));
+};
+
+Collection.prototype.subsetConnect = function(models) {
+  var subset = new Collection(models);
+  return subset;
+};
