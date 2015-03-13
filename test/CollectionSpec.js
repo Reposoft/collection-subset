@@ -4,6 +4,8 @@ var expect = require('chai').expect;
 
 var Backbone = require('backbone');
 
+var mocks = require('simple-mock');
+
 /**
  * Attempts to define a minimal API for Collections that back View+Controller logic.
  *
@@ -77,7 +79,9 @@ module.exports = function interfaceSpec(required) {
       });
 
       it("Requires options.filter", function() {
-
+        expect(function() {
+          c.subset({immerse:function() {}});
+        }).to.throw();
       });
 
       it("Supports options.immerse, a function", function() {
@@ -85,46 +89,133 @@ module.exports = function interfaceSpec(required) {
       });
 
       it("Returns a Collection", function() {
-
+        var filter = required.filters.where({anything:'x'});
+        var subset = c.subset({filter: filter});
+        expect(subset.subset).to.be.a('function');
       });
 
     });
 
     describe("Subset Collection reading", function() {
 
-      it("Exposes only the elements that match the subset filter argument", function() {
+      var c = new Collection();
+      var MyObj = Backbone.Model;
+      var m1 = c.add(new MyObj({id: 't1', type: 'test', category: 'A'}));
+      var m2 = c.add(new MyObj({id: 't2', type: 'test', category: 'B'}));
 
+      var filterCategoryB = required.filters.where({category:'B'});
+
+      it("Exposes only the elements that match the subset filter argument", function() {
+        var subset = c.subset({filter: filterCategoryB});
+        expect(subset.size()).to.equal(1);
+        expect(subset.at(0)).to.equal(m2);
       });
 
       it("Emits Backbone style change events", function() {
-
+        var subset = c.subset({filter: filterCategoryB});
+        expect(subset.at(0)).to.equal(m2);
+        var supersetChange = mocks.spy(function() {});
+        c.on('change', supersetChange);
+        var subsetChange = mocks.spy(function() {});
+        subset.on('change', subsetChange);
+        m2.set('unrelated','v');
+        expect(supersetChange.calls).to.have.length(1);
+        expect(subsetChange.calls).to.have.length(1);
       });
 
       it("Emits these events only for items matching the filter", function() {
-
+        var subset = c.subset({filter: filterCategoryB});
+        expect(subset.at(0)).to.equal(m2);
+        var subsetChange = mocks.spy(function() {});
+        subset.on('change', subsetChange);
+        m1.set('unrelated','u2');
+        m2.set('unrelated','v2');
+        expect(subsetChange.calls).to.have.length(1);
       });
 
     });
 
     describe("Subset's #add", function() {
 
-      it("Invokes the options.immerse function", function() {
+      var c = new Collection();
+      var MyObj = Backbone.Model;
+      var m1 = c.add(new MyObj({id: 't1', type: 'test', category: 'A'}));
+      var m2 = c.add(new MyObj({id: 't2', type: 'test', category: 'B'}));
 
+      var filterCategoryB = required.filters.where({category:'B'});
+
+      it("Adds to the superset", function() {
+        var subset = c.subset({filter: filterCategoryB});
+        var msub = new MyObj({id: 'sub', category: 'B'});
+        subset.add(msub);
+        expect(c.size()).to.equal(3);
+      });
+
+      it("Also removes from the superset at subset's remove", function() {
+        var subset = c.subset({filter: filterCategoryB});
+        subset.remove(subset.at(1));
+        expect(c.size()).to.equal(2);
+      });
+
+      it("Invokes the options.immerse function", function() {
+        var subset = c.subset({
+            filter: filterCategoryB,
+            immerse: function(model) {
+              model.set('myImmerse',true); // normally we'd just set the props given to the where filter
+            }
+          });
+        expect(subset.at(0)).to.equal(m2);
+        var m3 = new MyObj({id: 'temp3', category: 'B'});
+        subset.add(m3);
+        expect(subset.size()).to.equal(2);
+        expect(m3.get('myImmerse')).to.equal(true);
       });
 
       it("With the default immerse being a no-op i.e. no attribute changes", function() {
-
+        var subset = c.subset({
+            filter: filterCategoryB
+          });
+        expect(subset.at(0)).to.equal(m2);
+        var m4 = new MyObj({id: 'temp4', category: 'B'});
+        subset.add(m4);
+        expect(m4.keys()).to.have.length(2);
+        expect(m4.has('id')).to.be.true;
+        expect(m4.has('category')).to.be.true;
       });
 
       it("Does so for #add even if the object is already in the backing collection", function() {
-
+        var subset = c.subset({
+            filter: filterCategoryB,
+            immerse: function(model) {
+              model.set('category','B');
+            }
+          });
+        expect(subset.at(0)).to.equal(m2);
+        expect(m1.get('category')).to.equal('A');
+        var supersetSize = c.size();
+        subset.add(m1);
+        expect(c.size()).to.equal(supersetSize);
+        expect(m1.get('category')).to.equal('B');
+        m2.set('category', 'A');
       });
 
-      it("Adds below the last item of the subset, because it feels natural", function() {
+      xit("Adds just below the last item of the subset, because it feels natural", function() {
 
       });
 
       // TODO how to handle duplicates
+
+    });
+
+    describe("Dynamic matching of superset's added models to existing subsets", function() {
+
+      it("Is not implemented");
+
+    });
+
+    describe("Dynamic matching of superset's model changes to existing subsets", function() {
+
+      it("Is not implemented");
 
     });
 

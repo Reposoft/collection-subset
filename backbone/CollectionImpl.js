@@ -29,10 +29,20 @@ Collection.prototype.subset = function(options) {
   if (!options.filter) {
     throw 'Subset options must have a filter property';
   }
+  var subset;
   if (options.filter.where) {
-    return this.subsetConnect(this.where(options.filter.where));
+    subset = this.subsetConnect(this.where(options.filter.where));
   }
-  console.log('filter', options.filter, 'among', this.pluck('id'));
+  if (typeof subset == 'undefined') {
+    console.log('Unrecognized filter', options);
+    throw 'Unrecognized filter';
+  }
+  if (options.immerse) {
+    subset.on('add', options.immerse);
+  }
+  subset.on('add', this.add.bind(this));
+  subset.on('remove', this.remove.bind(this));
+  return subset;
 };
 
 Collection.prototype.subsetConnect = function(models) {
