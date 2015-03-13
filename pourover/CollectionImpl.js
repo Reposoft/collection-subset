@@ -16,3 +16,11 @@ Collection.prototype.add = function add(models) {
 Collection.prototype.size = function size() {
   return this.items.length;
 };
+
+var filters = require('./FiltersPourOver');
+
+Collection.prototype.filters = {};
+
+Collection.prototype.filters.where = function(properties) {
+  // TODO convert to arrays and return result from makeExactFilter
+};

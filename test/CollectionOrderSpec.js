@@ -2,13 +2,11 @@
 
 var expect = require('chai').expect;
 
-var required = {Collection: require('../backbone/CollectionImpl')};
-
-function interfaceSpec(impl, required) {
+module.exports = function interfaceSpec(required) {
 
   var Collection = required.Collection;
 
-  describe("Collection order, " + impl, function() {
+  describe("Collection order", function() {
 
     var c = new Collection();
 
@@ -82,9 +80,3 @@ function interfaceSpec(impl, required) {
   });
 
 }
-
-// impl ideas
-
-interfaceSpec('backbone', {Collection: require('../backbone/CollectionImpl')});
-
-//interfaceSpec('pourover', {Collection: require('../pourover/CollectionImpl')});
