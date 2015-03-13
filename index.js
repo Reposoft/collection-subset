@@ -3,6 +3,6 @@ module.exports = {
 
   Collection: require('./backbone/CollectionImpl'),
 
-  Filters: require('./pourover/FiltersPourOver')
+  filters: require('./backbone/FiltersBackbone')
 
 }

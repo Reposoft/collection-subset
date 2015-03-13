@@ -1,6 +1,7 @@
 
 var impl = {
-  Collection: require('../CollectionImpl')
+  Collection: require('../CollectionImpl'),
+  filters: require('../FiltersBackbone')
 };
 
 describe("collection-subset Backbone impl", function() {

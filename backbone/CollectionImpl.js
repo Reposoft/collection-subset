@@ -24,8 +24,3 @@ Collection.prototype.addFirst = function addFirst(newModel) {
   }
   this.add(newModel, {at:0});
 };
-
-Collection.prototype.filters = {};
-
-Collection.prototype.filters.where = function(properties) {
-};

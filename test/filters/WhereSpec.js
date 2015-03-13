@@ -4,15 +4,13 @@ var expect = require('chai').expect;
 
 module.exports = function interfaceSpec(required) {
 
-  var Collection = required.Collection;
-  var collection = new Collection();
+  var filters = required.filters;
 
   describe("filter:where", function() {
 
     it("Is at .filters.where", function() {
-      console.log('f', collection.filters);
-      expect(collection.filters.where).to.exist;
-      expect(collection.filters.where).to.be.a('function');
+      expect(filters.where).to.exist;
+      expect(filters.where).to.be.a('function');
     });
 
     xit("Is a basic exact single value match with an implied AND operator");

@@ -1,6 +1,7 @@
 
 var impl = {
-  Collection: require('../CollectionImpl')
+  Collection: require('../CollectionImpl'),
+  filters: require('../FiltersPourOver')
 };
 
 describe("collection-subset PourOver impl", function() {

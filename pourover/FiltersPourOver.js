@@ -10,3 +10,9 @@ for (var i = 0; i < supported.length; i++) {
   console.assert(!!PourOver[name], i);
   Filters[name] = PourOver[name];
 }
+
+Filters.whereEnum = Filters.makeExactFilter;
+
+Filters.where = function() {
+  // TODO wrap object values with arrays and use makeExactFilter
+};
