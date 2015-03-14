@@ -8,11 +8,15 @@ describe("collection-subset Backbone impl", function() {
 
   require('./UnitTests')(impl);
 
-  require('../../test/CollectionSpec')(impl);
+  require('../../test/CollectionSubsetSpec')(impl);
 
   require('../../test/CollectionOrderSpec')(impl);
 
   require('../../test/CollectionSortSpec')(impl);
+
+  require('../../test/CollectionGroupSpec')(impl);
+
+  require('../../test/CollectionObservableSpec')(impl);
 
   require('../../test/BackboneCompatibilitySpec')(impl);
 
