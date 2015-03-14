@@ -4,7 +4,9 @@ var expect = require('chai').expect;
 
 module.exports = function interfaceSpec(collection) {
 
-  describe("filter:idEnum", function() {
+  require('./IdEnumSpec')(collection);
+
+  describe("filter:enumDynamic", function() {
 
     it("Says if a model id should be included or not", function() {
 

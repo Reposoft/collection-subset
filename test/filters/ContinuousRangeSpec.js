@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-module.exports = function interfaceSpec(collection) {
+module.exports = function interfaceSpec(required) {
 
   describe("filter:continuousRange", function() {
 
