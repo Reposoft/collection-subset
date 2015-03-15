@@ -12,14 +12,47 @@ var Backbone = require('backbone');
  */
 module.exports = function interfaceSpec(required) {
 
-  var Collection = required.Collection;
+  it("Exports CollectionB, a less strict impl, to simplify migration from Backbone", function() {
+    expect(required.CollectionB).to.exist;
+  });
 
-  // This describe uses a regular Backbone Collection, not our backbone based impl,
-  // so should be restricted to a few sample operations
-  describe("Compatibility with plain Backbone.Collection", function() {
+  describe("CollectionB laxer API", function() {
+
+    it("Allows add with attribute hash instead of model", function() {
+      var c = new required.CollectionB();
+      var model = c.add({id: 'x', key:'val'});
+      expect(model.attributes).to.exist;
+    });
+
+    it("Supports a model option for the conversion to models", function() {
+      var MyModel = Backbone.Model.extend({my:function() {}});
+      var MyCollection = required.CollectionB.extend({
+        model: MyModel
+      });
+      var c = new MyCollection();
+      var model = c.add({id: 'y'});
+      expect(model.my).to.be.a('function');
+    });
+
+  });
+
+  describe("Deliberate Backbone API violations", function() {
+
+    // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a model class agnostic collection
+    // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a type agnostic collection
+    it("Refuses to add objects that lack .attributes", function() {
+      var c = new required.Collection();
+      expect(function() {
+        c.add({key: 'value', id: 'id1'});
+      }).to.throw('Attributes property required, transfers state');
+    });
+
+  });
+
+  describe("Assorted asserts for compatibility with plain Backbone.Collection", function() {
 
     var b = new Backbone.Collection();
-    var c = new Collection();
+    var c = new required.Collection();
 
     var Listener = function(collection) {
 
@@ -46,8 +79,7 @@ module.exports = function interfaceSpec(required) {
       c.add(m1);
     });
 
-    // TODO PourOver doesn't
-    xit("Emits 'add' events", function() {
+    it("Emits 'add' events", function() {
       expect(be.log).to.have.length(1);
       expect(ce.log).to.have.length(1);
     });

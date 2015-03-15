@@ -1,6 +1,7 @@
 
 var impl = {
   Collection: require('../CollectionImpl'),
+  CollectionB: require('../CollectionBImpl'),
   filters: require('../FiltersBackbone')
 };
 
