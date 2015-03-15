@@ -4,9 +4,9 @@ var expect = require('chai').expect;
 
 module.exports = function interfaceSpec(required) {
 
-  describe("#toObservableJSON", function() {
+  describe("#toObservedJSON", function() {
 
-    it("Returns same as toJSON but changes to the data will produce collection events", function() {
+    it("Returns same as toJSON but changes to that data will produce regular collection events", function() {
 
     });
 

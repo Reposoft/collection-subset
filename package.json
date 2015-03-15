@@ -1,6 +1,6 @@
 {
   "name": "collection-subset",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Support Views, on a need-to-know basis",
   "main": "index.js",
   "directories": {

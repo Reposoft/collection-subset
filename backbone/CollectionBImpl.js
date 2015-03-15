@@ -37,6 +37,7 @@ Collection.prototype.subset = function(options) {
     console.log('Unrecognized filter', options);
     throw 'Unrecognized filter';
   }
+  // TODO maybe this should be reversed, with the subset doing this.on and superset.listenTo?
   if (options.immerse) {
     subset.on('add', options.immerse);
   }

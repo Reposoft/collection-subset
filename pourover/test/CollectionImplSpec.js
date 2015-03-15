@@ -16,7 +16,7 @@ describe("collection-subset PourOver impl", function() {
 
   require('../../test/CollectionGroupSpec')(impl);
 
-  require('../../test/CollectionObservableSpec')(impl);
+  require('../../test/CollectionObservedSpec')(impl);
 
   // TODO PourOver doesn't emit add events for example
   //require('../../test/BackboneCompatibilitySpec')(impl);

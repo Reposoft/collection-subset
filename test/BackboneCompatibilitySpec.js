@@ -38,8 +38,8 @@ module.exports = function interfaceSpec(required) {
 
   describe("Deliberate Backbone API violations", function() {
 
-    // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a model class agnostic collection
-    // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a type agnostic collection
+    it("The ambiguity that Backbone offers isn't very useful, we'd prefer to have a type agnostic collection");
+
     it("Refuses to add objects that lack .attributes", function() {
       var c = new required.Collection();
       expect(function() {

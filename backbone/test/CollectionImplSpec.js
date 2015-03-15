@@ -17,7 +17,7 @@ describe("collection-subset Backbone impl", function() {
 
   require('../../test/CollectionGroupSpec')(impl);
 
-  require('../../test/CollectionObservableSpec')(impl);
+  require('../../test/CollectionObservedSpec')(impl);
 
   require('../../test/BackboneCompatibilitySpec')(impl);
 
