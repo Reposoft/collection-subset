@@ -212,7 +212,7 @@ module.exports = function interfaceSpec(required) {
     });
 
     describe("Dynamic matching of superset's added models to existing subsets", function() {
-
+      
       var Model = Backbone.Model;
       var c = new Collection();
       var sdef = {
@@ -342,7 +342,7 @@ module.exports = function interfaceSpec(required) {
       });
 
     });
-    
+
     describe("Sorting", function() {
 
       it("Preserves sort order from outer collection in inner", function() {
