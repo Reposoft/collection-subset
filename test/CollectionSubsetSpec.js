@@ -212,7 +212,17 @@ module.exports = function interfaceSpec(required) {
 
     describe("Dynamic matching of superset's added models to existing subsets", function() {
 
-      it("Is not implemented");
+      var c = new Collection();
+      var sdef = {
+      };
+
+      it("Ignores superset's added models that don't match filter", function() {
+
+      });
+
+      it("Appears as a regular add on subset if it matches filter", function() {
+
+      });
 
     });
 
