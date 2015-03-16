@@ -33,7 +33,9 @@ module.exports = function interfaceSpec(required) {
       var m2 = new MyObj({'id': 't2', 'name': 'Test 2', 'date': new Date(m1.valueOf() + 1000)});
 
       it("Adds objects that have .attributes", function() {
-        c.add(m1);
+        var added = c.add(m1);
+        expect(added == m1).to.be.true();
+        expect(added.attributes.id).to.equal('t1');
       });
 
       it("Has a size() method", function() {
@@ -41,8 +43,9 @@ module.exports = function interfaceSpec(required) {
       });
 
       it("Adds arrays of objects that have .attributes", function() {
-        c.add([m2]);
+        var added = c.add([m2]);
         expect(c.size()).to.equal(2);
+        expect(added[0] == m2).to.be.true();
       });
 
       xit("Does .cid stuff?", function() {

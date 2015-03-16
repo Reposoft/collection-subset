@@ -2,6 +2,8 @@
 
 var expect = require('chai').expect;
 
+var mocks = require('simple-mock');
+
 var Backbone = require('backbone');
 
 /**
@@ -39,6 +41,7 @@ module.exports = function interfaceSpec(required) {
   describe("Deliberate Backbone API violations", function() {
 
     it("The ambiguity that Backbone offers isn't very useful, we'd prefer to have a type agnostic collection");
+    it("We'd also prefer to avoid overuse of subclassing, and favor composition");
 
     it("Refuses to add objects that lack .attributes", function() {
       var c = new required.Collection();
@@ -47,45 +50,80 @@ module.exports = function interfaceSpec(required) {
       }).to.throw('Attributes property required, transfers state');
     });
 
+    it("Accepts any object with .attributes, not just Backbone.Model subclasses", function() {
+      var obj = {
+        attributes: {
+          data1: 'val1'
+        }
+      };
+      var c = new required.Collection();
+      var added = c.add(obj);
+      expect(obj.attributes.data1).to.equal('val1');
+      expect(added.attributes.data1).to.equal('val1');
+      expect(c == added).to.be.true();
+    });
+
+    it("Propagates change events from any object that emits them", function() {
+      var bev = require('bev');
+      var obj = {
+        attributes: {
+        }
+      };
+      bev.mixin(obj);
+      var c = new required.Collection();
+      var added = c.add(obj);
+      var handler = mocks.spy(function() {});
+      c.on('custom', handler);
+      obj.trigger('custom');
+      expect(handler.called).to.be.true();
+    });
+
   });
 
   describe("Assorted asserts for compatibility with plain Backbone.Collection", function() {
 
+    // below we compare with an actual backbone collection, useful for PourOver or other non-backbone impls
+
     var b = new Backbone.Collection();
     var c = new required.Collection();
 
-    var Listener = function(collection) {
-
-      this.id = collection.toString();
-
-      this.log = [];
-
-      var eventHandler = function(event) {
-        this.log.push(arguments);
-        console.log('Compatible event?', this.id, JSON.stringify(event));
-      };
-
-      collection.on('add', eventHandler.bind(this));
-    };
-
-    var be = new Listener(b);
-    var ce = new Listener(c);
+    var bAdd = mocks.spy(function() {});
+    b.on('add', bAdd);
+    var cAdd = mocks.spy(function() {});
+    c.on('add', cAdd);
 
     var m1 = new Backbone.Model({'id': 't1', 'name': 'Test1', 'date': new Date()});
 
     it("Accepts Backbone.Model instances", function() {
       b.add(m1);
       expect(m1.cid).to.exist();
-      c.add(m1);
+      var added = c.add(m1);
+      expect(added == m1).to.be.true();
     });
 
     it("Emits 'add' events", function() {
-      expect(be.log).to.have.length(1);
-      expect(ce.log).to.have.length(1);
+      expect(bAdd.calls).to.have.length(1);
+      expect(cAdd.calls).to.have.length(1);
     });
 
     it("Emits change events", function() {
+      var bc = mocks.spy(function() {});
+      b.on('change:attr1', bc);
+      var cc = mocks.spy(function() {});
+      c.on('change:attr1', cc);
+      m1.set('attr1',true);
+      expect(bc.called).to.be.true();
+      expect(cc.called).to.be.true();
+    });
 
+    it("Collection emits custom events from models", function() {
+      var bCustom = mocks.spy(function() {});
+      b.on('custom', bCustom);
+      var cCustom = mocks.spy(function() {});
+      c.on('custom', cCustom);
+      m1.trigger('custom');
+      expect(bCustom.called).to.be.true();
+      expect(cCustom.called).to.be.true();
     });
 
   });
