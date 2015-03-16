@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 var CollectionB = require('./CollectionBImpl');
-var Backbone = require('backbone');
+var Backbone = require('./BackboneExport');
 
 var Collection = module.exports = CollectionB.extend({
 
