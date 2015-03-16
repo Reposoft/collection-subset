@@ -126,6 +126,22 @@ module.exports = function interfaceSpec(required) {
       expect(cCustom.called).to.be.true();
     });
 
+    it("Is compatible across require calls", function() {
+      var bb1 = require('backbone');
+      //var bb2 = require('backbone');
+      // a fork or some other lib's instance of backbone
+      //var bb2 = require('../../bev/node_modules/backbone');
+      var bb2 = require('bmc');
+      var m1 = new bb1.Model({id:'bb1',x:'y'});
+      var m2 = new bb2.Model({id:'bb2',z:'w'});
+      var c1 = new bb1.Collection();
+      var added2 = c1.add(m2);
+      expect(added2.attributes).to.exist();
+      expect(added2.attributes.attributes).to.be.undefined();
+      expect(added2.attributes.z).to.equal('w');
+      expect(added2 === m2).to.be.true();
+    });
+
   });
 
 };
