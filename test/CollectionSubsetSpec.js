@@ -213,13 +213,93 @@ module.exports = function interfaceSpec(required) {
 
     describe("Dynamic matching of superset's added models to existing subsets", function() {
 
-      it("Is not implemented");
+      var Model = Backbone.Model;
+      var c = new Collection();
+      var sdef = {
+        filter: {
+          where: {
+            v: '2'
+          },
+        },
+        immerse: function(model) {
+          throw new Error('unexpected call');
+        }
+      };
+      var s = c.subset(sdef);
+      var adds = mocks.spy(function() {});
+      s.on('add', adds);
+
+      it("Ignores superset's added models that don't match filter", function() {
+        c.add(new Model({v: '1'}));
+        expect(s.size()).to.equal(0);
+        expect(adds.called).to.be.false();
+      });
+
+      it("Appears as a regular add on subset if it matches filter", function() {
+        var adds = mocks.spy(function() {});
+        s.on('add', adds);
+        c.add(new Model({v: '2'}));
+        expect(adds.called).to.be.true();
+        expect(s.size()).to.equal(1);
+      });
+
+      describe("More difficult cases", function() {
+
+        it("Might look ok as extra nesting alongside the basic tests");
+
+      });
 
     });
 
     describe("Dynamic matching of superset's model changes to existing subsets", function() {
 
-      it("Is not implemented");
+      var c = new Collection();
+      var m1 = c.add(new Backbone.Model({v: '1'}));
+      var sdef = {
+        filter: {
+          where: {
+            v: '2'
+          },
+        },
+        immerse: function(model) {
+          throw new Error('unexpected call');
+        }
+      };
+      var s = c.subset(sdef);
+      var changev = mocks.spy(function() {});
+      s.on('change:v', changev);
+      var changeo = mocks.spy(function() {});
+      s.on('change:o', changeo);
+
+      it("Enters the subset if value is changed to match filter", function() {
+        expect(changev.called).to.be.false();
+        m1.set('v', '2');
+        expect(s.size()).to.equal(1);
+      });
+
+      it("Produces a change event on the way in", function() {
+        expect(changev.called).to.be.true();
+      });
+
+      it("Produces change events when in", function() {
+        m1.set('o', true);
+        expect(changeo.called).to.be.true();
+      });
+
+      it("Produces change events on the way out", function() {
+        changev.reset();
+        m1.set('v', '3');
+        expect(changev.called).to.be.true();
+      });
+
+      it("Produces no change events when outside", function() {
+        changeo.reset();
+        changev.reset();
+        m1.set('o', false);
+        expect(changeo.called).to.be.false();
+        m1.set('v', '4');
+        expect(changev.called).to.be.false();
+      });
 
     });
 
