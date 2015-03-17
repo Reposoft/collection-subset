@@ -4,6 +4,8 @@ require('../backbone/test/CollectionImplSpec');
 
 require('../pourover/test/CollectionImplSpec');
 
+require('../bfc/test/CollectionImplSpec');
+
 var expect = require('chai').expect;
 
 var exports = require('../');
