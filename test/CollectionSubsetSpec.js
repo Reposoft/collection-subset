@@ -24,9 +24,10 @@ module.exports = function interfaceSpec(required) {
       var c = new Collection();
 
       // A zero-framework object constructor with the distinction between logic and persistable state
-      var MyObj = function MyObj(attributes) {
-        this.attributes = attributes;
-      };
+      //var MyObj = function MyObj(attributes) {
+      //  this.attributes = attributes;
+      //};
+      var MyObj = Backbone.Model.extend({});
 
       var m1 = new MyObj({'id': 't1', 'name': 'Test 1', 'date': new Date()});
       m1.cid = 1;
