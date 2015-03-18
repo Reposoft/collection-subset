@@ -82,6 +82,14 @@ module.exports = function interfaceSpec(required) {
       expect(handler.called).to.be.true();
     });
 
+    it("Refuses to add an object that has already been added", function() {
+
+    });
+
+    it("Should probably also refuse to add an object with a .attributes that has already been added", function() {
+
+    });
+
   });
 
   describe("Assorted asserts for compatibility with plain Backbone.Collection", function() {

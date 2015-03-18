@@ -342,34 +342,7 @@ module.exports = function interfaceSpec(required) {
       });
 
     });
-
-    describe("#add", function() {
-
-      // The ambiguity that Backbone offers isn't very useful, we'd prefer to have a type agnostic collection
-      it("Refuses to add objects that lack .attributes", function() {
-        var c = new Collection();
-        expect(function() {
-          c.add({key: 'value', id: 'id1'});
-        }).to.throw('Attributes property required, transfers state');
-      });
-
-      it("Returns the added objects", function() {
-        // still no support for the generic object: var m = {attributes:{id: 'id1'}};
-        var m = new Backbone.Model({id: 'id1'});
-        var c = new Collection();
-        expect(c.add(m)).to.equal(m);
-      });
-
-      it("Refuses to add an object that has already been added", function() {
-
-      });
-
-      it("Should probably also refuse to add an object with a .attributes that has already been added", function() {
-
-      });
-
-    });
-
+    
     describe("Sorting", function() {
 
       it("Preserves sort order from outer collection in inner", function() {

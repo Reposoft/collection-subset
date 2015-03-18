@@ -1,5 +1,6 @@
 
-var Backbone = require('../backbone/BackboneExport');
+var Collection = require('../backbone/CollectionImpl');
 
-module.exports = Backbone.Collection.extend({
-});
+var subset = require('./SubsetWithFiltered');
+
+module.exports = Collection.extend(subset);

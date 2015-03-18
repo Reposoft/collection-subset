@@ -20,4 +20,8 @@ describe("Module", function() {
     expect(exports.Backbone.Collection).to.exist;
   });
 
+  it("Does not expose internal methods on this prototype", function() {
+    expect(exports.Backbone.Collection.prototype.subsetConnect).to.be.undefined();
+  });
+
 });
