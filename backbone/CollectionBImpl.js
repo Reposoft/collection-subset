@@ -14,17 +14,26 @@ var subsetConnect = function(superset, matcher, immerse) {
   console.log('matched', initialModels.length, 'of', superset.toJSON());
   var subset = new Collection(initialModels);
   // Modifications on sub
-  subset.on('add', immerse);
-  subset.on('add', superset.add.bind(this));
-  subset.on('remove', superset.remove.bind(this));
+  //subset.on('add', immerse);
+  subset.on('add', function(model) {
+    console.log('immerse', immerse, model.id);
+    immerse(model);
+  });
+  //subset.on('add', superset.add.bind(superset));
+  // workaround for unexpected add first in collection
+  subset.on('add', function(model, options) {
+    options.at = superset.length;
+    superset.add(model, options);
+  });
+  subset.on('remove', superset.remove.bind(superset));
   // Modifications on super
   subset.listenTo(superset, 'add', function(model) {
-    if (matcher(model.attributes)) {
+    if (matcher(model)) {
       this.add(model);
     }
   });
   subset.listenTo(superset, 'remove', function(model) {
-    if (matcher(model.attributes)) {
+    if (matcher(model)) {
       this.remove(model);
     }
   });
@@ -41,8 +50,9 @@ Collection.prototype.subset = function(options) {
   }
   var matcher;
   if (options.filter.where) {
-    matcher = _.matcher(options.filter.where);
-    console.log('matcher', options.filter.where, matcher(options.filter.where));
+    matcher = function(model) {
+      return _.isMatch(model.attributes, options.filter.where);
+    }
   }
   if (typeof matcher == 'undefined') {
     console.log('Unrecognized filter', options);

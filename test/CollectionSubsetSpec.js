@@ -149,16 +149,20 @@ module.exports = function interfaceSpec(required) {
       var filterCategoryB = required.filters.where({category:'B'});
 
       it("Adds to the superset", function() {
+        expect(c.pluck('id')).to.deep.equal(['t1','t2']);
         var subset = c.subset({filter: filterCategoryB});
         var msub = new MyObj({id: 'sub', category: 'B'});
         subset.add(msub);
-        expect(c.size()).to.equal(3);
+        expect(subset.pluck('id')).to.deep.equal(['t2', 'sub']);
+        expect(c.pluck('id')).to.deep.equal(['t1','t2','sub']);
       });
 
       it("Also removes from the superset at subset's remove", function() {
         var subset = c.subset({filter: filterCategoryB});
+        expect(subset.pluck('id')).to.deep.equal(['t2','sub']);
         subset.remove(subset.at(1));
-        expect(c.size()).to.equal(2);
+        expect(subset.pluck('id')).to.deep.equal(['t2']);
+        expect(c.pluck('id')).to.deep.equal(['t1','t2']);
       });
 
       it("Invokes the options.immerse function", function() {
@@ -168,7 +172,7 @@ module.exports = function interfaceSpec(required) {
               model.set('myImmerse',true); // normally we'd just set the props given to the where filter
             }
           });
-        expect(subset.at(0)).to.equal(m2);
+        expect(subset.at(0).id).to.equal('t2');
         var m3 = new MyObj({id: 'temp3', category: 'B'});
         subset.add(m3);
         expect(subset.size()).to.equal(2);
@@ -179,7 +183,7 @@ module.exports = function interfaceSpec(required) {
         var subset = c.subset({
             filter: filterCategoryB
           });
-        expect(subset.at(0)).to.equal(m2);
+        expect(subset.at(0).cid).to.equal(m2.cid);
         var m4 = new MyObj({id: 'temp4', category: 'B'});
         subset.add(m4);
         expect(m4.keys()).to.have.length(2);
@@ -194,7 +198,7 @@ module.exports = function interfaceSpec(required) {
               model.set('category','B');
             }
           });
-        expect(subset.at(0)).to.equal(m2);
+        expect(subset.at(0).cid).to.equal(m2.cid);
         expect(m1.get('category')).to.equal('A');
         var supersetSize = c.size();
         subset.add(m1);
@@ -212,7 +216,7 @@ module.exports = function interfaceSpec(required) {
     });
 
     describe("Dynamic matching of superset's added models to existing subsets", function() {
-      
+
       var Model = Backbone.Model;
       var c = new Collection();
       var sdef = {
