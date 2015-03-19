@@ -2,7 +2,18 @@
 Collection Subset
 =================
 
-Support Views, on a need-to-know basis.
+Here's how it goes:
+ 1. You value Backbone because it gives you a model layer with business logic.
+ 2. Your UI is rendered from this whole master model.
+ 3. But in fact your widgets tend to be concerned with only parts of the data (your app isn't "todomvc").
+ 4. Look around and thre's if statements scattered around your views to disregard some models.
+ 5. Switch your Backbone.Collection:s for Subset's CollectionB instead.
+ 6. Later if you drift away from Backbone's View+Router stuff try to switch to Collection and bmc instead.
+ 7. What you got is a data structure lib that can continue to back you app through UI generations.
+
+Summary:
+
+Subsets Support Views, on a need-to-know basis.
 
 We want Backbone style Collections, with change events.
 While single-model (view+controller)s are trivial to maintain,
