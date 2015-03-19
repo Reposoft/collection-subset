@@ -11,7 +11,7 @@
     "backbone-filtered-collection": "^0.4.0",
     "bev": "^1.0.0",
     "simple-mock": "^0.2.9",
-    "underscore": "^1.7.0"
+    "underscore": "^1.8.2"
   },
   "devDependencies": {
     "chai": "^1.10.0",
