@@ -31,6 +31,7 @@ Collection.prototype.subset = function(options) {
 };
 
 // The methods below are part of the stricter order scope, and might be extracted to upstream "bmc" module
+// TODO extract to mixin
 
 Collection.prototype.addAfter = function addAfter(newModel, referenceModel) {
   var ix = this.indexOf(referenceModel);

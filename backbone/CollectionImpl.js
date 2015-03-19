@@ -4,6 +4,8 @@ var _ = require('underscore');
 var CollectionB = require('./CollectionBImpl');
 var Backbone = require('./BackboneExport');
 
+// TODO extract to mixin ("strict")
+
 var Collection = module.exports = CollectionB.extend({
 
   // Model identification using instanceof is embedded in
