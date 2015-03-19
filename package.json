@@ -16,6 +16,9 @@
     "backbone-jquery": "^1.0.1",
     "backbone.obscura": "^1.0.1",
     "backprop": "^0.4.1",
+    "backbone.collectionsubset": "^0.1.1",
+    "backbone.facetr": "^0.3.6",
+    "backbone.projections": "^1.0.0",
     "bev": "^1.0.0",
     "bmc": "^0.1.2"
   },
