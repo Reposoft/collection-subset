@@ -30,6 +30,16 @@ describe("BackboneSubsetMixin", function() {
       }).to.throw('Missing super.initialize');
     });
 
+    it("Does not leak state through prototype.subset", function() {
+      var C = function C() {};
+      mixin.apply(C.prototype);
+      var c1 = new C();
+      expect(c1.subset).to.exist();
+      var c2 = new C();
+      expect(c2.subset).to.exist();
+      expect(c1.subset).to.equal(c2.subset);
+    });
+
   });
 
   describe("#initialize", function() {
