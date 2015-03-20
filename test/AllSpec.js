@@ -1,5 +1,6 @@
 'use strict';
 
+require('../backbone/test/BackboneSubsetMixinSpec');
 require('../backbone/test/CollectionImplSpec');
 
 require('../pourover/test/CollectionImplSpec');
